@@ -55,7 +55,7 @@ class TransactionController extends AbstractController
                 $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
                 $transactionRepository->save($transaction);
             } catch (AccountBalanceTooLowException $exception) {
-                $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
+                $this->addFlash('danger', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
 
                 return $this->render('transaction/deposit.html.twig', [
                     'account' => $account,
@@ -102,7 +102,7 @@ class TransactionController extends AbstractController
                 $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
                 $transactionRepository->save($transaction);
             } catch (AccountBalanceTooLowException $exception) {
-                $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
+                $this->addFlash('danger', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
 
                 return $this->render('transaction/withdraw.html.twig', [
                     'account' => $account,
@@ -149,7 +149,7 @@ class TransactionController extends AbstractController
                 $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
                 $transactionRepository->save($transaction);
             } catch (AccountBalanceTooLowException $exception) {
-                $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
+                $this->addFlash('danger', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
 
                 return $this->render('transaction/transfer.html.twig', [
                     'account' => $account,

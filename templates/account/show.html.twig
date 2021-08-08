@@ -20,9 +20,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('transaction_deposit', {'id': account.id}) }}">Deposit balance</a>
-    <a href="{{ path('transaction_withdraw', {'id': account.id}) }}">Withdraw balance</a>
-    <a href="{{ path('transaction_transfer', {'id': account.id}) }}">Transfer balance</a>
+    <a class="btn btn-outline-primary" href="{{ path('transaction_deposit', {'id': account.id}) }}">Deposit balance</a>
+    <a class="btn btn-outline-primary" href="{{ path('transaction_withdraw', {'id': account.id}) }}">Withdraw balance</a>
+    <a class="btn btn-outline-primary" href="{{ path('transaction_transfer', {'id': account.id}) }}">Transfer balance</a>
 
     <h3>Transaction List</h3>
 
@@ -69,5 +69,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('account_index') }}">back to list</a>
+    <a class="btn btn-outline-secondary" href="{{ path('account_index') }}">back to list</a>
 {% endblock %}

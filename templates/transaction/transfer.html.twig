@@ -6,5 +6,5 @@
 
     {{ include('transaction/_form.html.twig', {'button_label': 'Transfer'}) }}
 
-    <a href="{{ path('account_show', {'id': account.id}) }}">back to account</a>
+    <a class="btn btn-outline-secondary" href="{{ path('account_show', {'id': account.id}) }}">back to account</a>
 {% endblock %}
