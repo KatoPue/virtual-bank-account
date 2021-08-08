@@ -1,41 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Transaction index{% endblock %}
-
 {% block body %}
-    <h1>Transaction index</h1>
+    <h1>Transaction List</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Origin</th>
+                <th>Target</th>
                 <th>Reference</th>
                 <th>Authorization</th>
                 <th>SubmitterId</th>
-                <th>Amount</th>
-                <th>actions</th>
+                <th>Amount in ct</th>
             </tr>
         </thead>
         <tbody>
         {% for transaction in transactions %}
             <tr>
                 <td>{{ transaction.id }}</td>
+                <td>
+                    {% if transaction.origin %}
+                        {{ transaction.origin.iban }}
+                    {% else %}
+                        none
+                    {% endif %}
+                </td>
+                <td>
+                    {% if transaction.target %}
+                        {{ transaction.target.iban }}
+                    {% else %}
+                        none
+                    {% endif %}
+                </td>
                 <td>{{ transaction.reference }}</td>
                 <td>{{ transaction.authorization }}</td>
                 <td>{{ transaction.submitterId }}</td>
                 <td>{{ transaction.amount }}</td>
-                <td>
-                    <a href="{{ path('transaction_show', {'id': transaction.id}) }}">show</a>
-                    <a href="{{ path('transaction_edit', {'id': transaction.id}) }}">edit</a>
-                </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('transaction_new') }}">Create new</a>
 {% endblock %}

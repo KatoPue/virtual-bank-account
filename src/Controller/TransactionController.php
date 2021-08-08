@@ -111,6 +111,82 @@ class TransactionController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    #[Route('/{id}/withdraw', name: 'transaction_withdraw', methods: ['GET', 'POST'])]
+    public function withdraw(
+        Request $request,
+        Account $account,
+        TransactionRepository $transactionRepository,
+        UpdateAccountBalance $updateAccountBalance,
+    ): Response
+    {
+        $transaction = new Transaction();
+        $transaction->setOrigin($account);
+
+        $form = $this->createForm(TransactionType::class, $transaction, [
+            'usage_context' => TransactionFormTypeMode::WITHDRAW()
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Transaction $transaction */
+            $transaction = $form->getData();
+            $transactionRepository->save($transaction);
+
+            $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+
+            $this->addFlash('success', 'Transaction successfully completed.');
+
+            return $this->redirectToRoute('account_show', ['id' => $account->getId()]);
+        }
+
+        return $this->render('transaction/withdraw.html.twig', [
+            'account' => $account,
+            'form'    => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    #[Route('/{id}/transfer', name: 'transaction_transfer', methods: ['GET', 'POST'])]
+    public function transfer(
+        Request $request,
+        Account $account,
+        TransactionRepository $transactionRepository,
+        UpdateAccountBalance $updateAccountBalance,
+    ): Response
+    {
+        $transaction = new Transaction();
+        $transaction->setOrigin($account);
+
+        $form = $this->createForm(TransactionType::class, $transaction, [
+            'usage_context' => TransactionFormTypeMode::TRANSFER()
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Transaction $transaction */
+            $transaction = $form->getData();
+            $transactionRepository->save($transaction);
+
+            $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+
+            $this->addFlash('success', 'Transaction successfully completed.');
+
+            return $this->redirectToRoute('account_show', ['id' => $account->getId()]);
+        }
+
+        return $this->render('transaction/transfer.html.twig', [
+            'account' => $account,
+            'form'    => $form->createView(),
+        ]);
+    }
+
     #[Route('/{id}', name: 'transaction_delete', methods: ['POST'])]
     public function delete(Request $request, Transaction $transaction): Response
     {

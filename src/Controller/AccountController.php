@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Account;
 use App\Form\AccountType;
 use App\Repository\AccountRepository;
+use App\Repository\TransactionRepository;
+use App\Service\PrepareTransactionViewModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,10 +45,14 @@ class AccountController extends AbstractController
     }
 
     #[Route('/{id}', name: 'account_show', methods: ['GET'])]
-    public function show(Request $request, Account $account): Response
+    public function show(Account $account, TransactionRepository $transactionRepository, PrepareTransactionViewModel $prepareTransactionViewModel): Response
     {
+         $relatedTransactions = $transactionRepository->findTransactionsRelatedToAccount($account);
+         $transactionsForView = $prepareTransactionViewModel->prepareFromTransactionsRelatedToAccount($relatedTransactions, $account);
+
         return $this->render('account/show.html.twig', [
-            'account' => $account,
+            'account'      => $account,
+            'transactions' => $transactionsForView,
         ]);
     }
 

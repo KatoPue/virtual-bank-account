@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\AccountRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,22 +32,6 @@ class Account
      * @ORM\JoinColumn(nullable=false)
      */
     private ?AccountHolder $accountHolder = null;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="origin")
-     */
-    private ArrayCollection $transactionsAsOrigin;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="target")
-     */
-    private ArrayCollection $transactionsAsTarget;
-
-    public function __construct()
-    {
-        $this->transactionsAsOrigin = new ArrayCollection();
-        $this->transactionsAsTarget = new ArrayCollection();
-    }
 
     public function __toString()
     {
@@ -93,66 +75,6 @@ class Account
     public function setAccountHolder(AccountHolder $accountHolder): self
     {
         $this->accountHolder = $accountHolder;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<Transaction>
-     */
-    public function getTransactionsAsOrigin(): Collection
-    {
-        return $this->transactionsAsOrigin;
-    }
-
-    public function addTransactionsAsOrigin(Transaction $transactionsAsOrigin): self
-    {
-        if (!$this->transactionsAsOrigin->contains($transactionsAsOrigin)) {
-            $this->transactionsAsOrigin[] = $transactionsAsOrigin;
-            $transactionsAsOrigin->setOrigin($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTransactionsAsOrigin(Transaction $transactionsAsOrigin): self
-    {
-        if ($this->transactionsAsOrigin->removeElement($transactionsAsOrigin)) {
-            // set the owning side to null (unless already changed)
-            if ($transactionsAsOrigin->getOrigin() === $this) {
-                $transactionsAsOrigin->setOrigin(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<Transaction>
-     */
-    public function getTransactionsAsTarget(): Collection
-    {
-        return $this->transactionsAsTarget;
-    }
-
-    public function addTransactionsAsTarget(Transaction $transationsAsTarget): self
-    {
-        if (!$this->transactionsAsTarget->contains($transationsAsTarget)) {
-            $this->transactionsAsTarget[] = $transationsAsTarget;
-            $transationsAsTarget->setTarget($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTransactionsAsTarget(Transaction $transactionsAsTarget): self
-    {
-        if ($this->transactionsAsTarget->removeElement($transactionsAsTarget)) {
-            // set the owning side to null (unless already changed)
-            if ($transactionsAsTarget->getTarget() === $this) {
-                $transactionsAsTarget->setTarget(null);
-            }
-        }
 
         return $this;
     }

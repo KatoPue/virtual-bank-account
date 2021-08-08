@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Account{% endblock %}
-
 {% block body %}
     <h1>Account</h1>
 
@@ -23,8 +21,53 @@
     </table>
 
     <a href="{{ path('transaction_deposit', {'id': account.id}) }}">Deposit balance</a>
-    {#<a href="{{ path('transaction_withdraw', {'id': account.id}) }}">Withdraw balance</a>#}
-    {#<a href="{{ path('transaction_transfer', {'id': account.id}) }}">Transfer balance</a>#}
+    <a href="{{ path('transaction_withdraw', {'id': account.id}) }}">Withdraw balance</a>
+    <a href="{{ path('transaction_transfer', {'id': account.id}) }}">Transfer balance</a>
+
+    <h3>Transaction List</h3>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Origin</th>
+            <th>Target</th>
+            <th>Reference</th>
+            <th>Authorization</th>
+            <th>SubmitterId</th>
+            <th>Amount in ct</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>
+                    {% if transaction.origin %}
+                        {{ transaction.origin.iban }}
+                    {% else %}
+                        none
+                    {% endif %}
+                </td>
+                <td>
+                    {% if transaction.target %}
+                        {{ transaction.target.iban }}
+                    {% else %}
+                        none
+                    {% endif %}
+                </td>
+                <td>{{ transaction.reference }}</td>
+                <td>{{ transaction.authorization }}</td>
+                <td>{{ transaction.submitterId }}</td>
+                <td>{{ (transaction.amount)|number_format(2) }} €</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     <a href="{{ path('account_index') }}">back to list</a>
 {% endblock %}

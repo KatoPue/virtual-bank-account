@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Account;
 use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -31,5 +32,17 @@ class TransactionRepository extends ServiceEntityRepository
     {
         $this->_em->persist($transaction);
         $this->_em->flush();
+    }
+
+    public function findTransactionsRelatedToAccount(Account $account): array
+    {
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->where('a.origin = :account')
+            ->orWhere('a.target = :account')
+        ;
+
+        $queryBuilder->setParameter('account', $account);
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

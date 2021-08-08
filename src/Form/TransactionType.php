@@ -38,6 +38,7 @@ class TransactionType extends AbstractType
 
         if ($options['usage_context'] === TransactionFormTypeMode::TRANSFER()) {
             $builder->add('target');
+            $builder->add('reference');
         }
 
         if ($options['usage_context'] === TransactionFormTypeMode::SEPA()) {

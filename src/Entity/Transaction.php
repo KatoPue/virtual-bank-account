@@ -18,12 +18,12 @@ class Transaction
     private ?int $id = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="transactionsAsOrigin")
+     * @ORM\ManyToOne(targetEntity=Account::class)
      */
     private ?Account $origin = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="transationsAsTarget")
+     * @ORM\ManyToOne(targetEntity=Account::class)
      */
     private ?Account $target = null;
 

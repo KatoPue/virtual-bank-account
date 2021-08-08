@@ -32,7 +32,7 @@ class UpdateAccountBalance
 
         $originAccount = $transaction->getOrigin();
         if ($originAccount) {
-            // TODO account balance is not allowed to be lover than 0
+            // TODO account balance is not allowed to be lower than 0
             $originAccount->setBalance($originAccount->getBalance() - $transaction->getAmount());
             $this->accountRepository->save($originAccount);
         }
