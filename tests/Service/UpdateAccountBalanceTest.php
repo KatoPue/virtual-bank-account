@@ -4,6 +4,7 @@ namespace App\Tests\Service;
 
 use App\Entity\Account;
 use App\Entity\Transaction;
+use App\Exception\AccountBalanceTooLowException;
 use App\Repository\AccountRepository;
 use App\Service\UpdateAccountBalance;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -88,6 +89,29 @@ class UpdateAccountBalanceTest extends KernelTestCase
         $transaction->setOrigin($realAccount);
         $transaction->setTarget($realAccount2);
         $transaction->setAmount(1234);
+
+        $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+    }
+
+    public function testUpdateAccountsLinkedToTransaction_Withdraw_BalanceFallingUnderZero(): void
+    {
+        $this->expectException(AccountBalanceTooLowException::class);
+
+        $kernel = self::bootKernel();
+
+        /** @var Account $realAccount */
+        $realAccount   = self::$container->get(AccountRepository::class)->find(1);
+        $realAccount->setBalance(30000);
+
+        $accountRepositoryMock = $this->createMock(AccountRepository::class);
+        $accountRepositoryMock->expects($this->never())
+            ->method('save')
+        ;
+        $updateAccountBalance = new UpdateAccountBalance($accountRepositoryMock);
+
+        $transaction = new Transaction();
+        $transaction->setOrigin($realAccount);
+        $transaction->setAmount(9999999999);
 
         $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
     }

@@ -81,10 +81,7 @@ class TransactionViewModel
         return $this->submitterId;
     }
 
-    /**
-     * @return int
-     */
-    public function getAmount(): int
+    public function getAmount(): float
     {
         return $this->amount;
     }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Account;
 use App\Entity\Transaction;
 use App\Enum\TransactionFormTypeMode;
+use App\Exception\AccountBalanceTooLowException;
 use App\Form\TransactionType;
 use App\Repository\TransactionRepository;
 use App\Service\UpdateAccountBalance;
@@ -51,7 +52,16 @@ class TransactionController extends AbstractController
             $transaction = $form->getData();
             $transactionRepository->save($transaction);
 
-            $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+            try {
+                $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+            } catch (AccountBalanceTooLowException $exception) {
+                $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
+
+                return $this->render('transaction/deposit.html.twig', [
+                    'account' => $account,
+                    'form'    => $form->createView(),
+                ]);
+            }
 
             $this->addFlash('success', 'Transaction successfully completed.');
 
@@ -89,7 +99,16 @@ class TransactionController extends AbstractController
             $transaction = $form->getData();
             $transactionRepository->save($transaction);
 
-            $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+            try {
+                $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+            } catch (AccountBalanceTooLowException $exception) {
+                $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
+
+                return $this->render('transaction/withdraw.html.twig', [
+                    'account' => $account,
+                    'form'    => $form->createView(),
+                ]);
+            }
 
             $this->addFlash('success', 'Transaction successfully completed.');
 
@@ -127,7 +146,16 @@ class TransactionController extends AbstractController
             $transaction = $form->getData();
             $transactionRepository->save($transaction);
 
-            $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+            try {
+                $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+            } catch (AccountBalanceTooLowException $exception) {
+                $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
+
+                return $this->render('transaction/transfer.html.twig', [
+                    'account' => $account,
+                    'form'    => $form->createView(),
+                ]);
+            }
 
             $this->addFlash('success', 'Transaction successfully completed.');
 
