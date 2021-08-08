@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  php:
+    image: thecodingmachine/php:8.0-v4-fpm-node14
+    environment:
+      - PHP_EXTENSION_INTL=1
+    volumes:
+      - ./:/var/www/html
+
+  database:
+    image: mariadb:10.6.2
+    environment:
+      - MYSQL_DATABASE=virtualbankaccount
+      - MYSQL_USER=virtualbankaccount_dbuser
+      - MYSQL_PASSWORD=skdfuhen47tzruwj38ru3jv87tzhi
+      - MYSQL_ROOT_PASSWORD=skdfuhen47tzruwj38ru3jv87tzhikg3489jtfu839wh7rt6f237tg46r378t46r
+
+  nginx:
+    build:
+      context: .docker/nginx
+    volumes:
+      - ./:/var/www/html
+      - .docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - .docker/nginx/sites/:/etc/nginx/sites-available
+      - .docker/nginx/conf.d/:/etc/nginx/conf.d
+    depends_on:
+      - php
+      - database
