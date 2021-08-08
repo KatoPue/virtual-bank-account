@@ -19,8 +19,6 @@ What tools you need to install and run the project:
 To run everything locally, without a proxy like traefik to forward the request to the correct docker container, you will need to bind the webserver to a local port.   
 For that create a `docker-compose.override.yml` in the project root.
 
-The test environment is configured to use a sqlite database. Some php extensions are needed to work with sqlite.
-
 Example configuration:
 ```
 version: '3'
@@ -76,7 +74,7 @@ $ docker-compose exec php bin/console doctrine:fixtures:load
 ### testing
 
 ```
-$ docker-compose exec php vendor/bin/phpunit
+$ docker-compose exec php composer test
 ```
 
 Troubleshooting
@@ -101,7 +99,7 @@ To run phpunit you need to make it executable
 $ docker-compose exec php chmod +x bin/phpunit
 ```
 
-### database was not created
+### database got not created automatically
 
 Create the database
 ```
