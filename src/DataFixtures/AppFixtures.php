@@ -19,7 +19,7 @@ class AppFixtures extends Fixture
         $account = new Account();
         $account->setAccountHolder($accountHolder);
         $account->setIban('DE58500105172225554153');
-        $account->setBalance('0');
+        $account->setBalance(100000);
 
         $manager->persist($account);
 
@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
         $account2 = new Account();
         $account2->setAccountHolder($accountHolder2);
         $account2->setIban('DE26500105177733472361');
-        $account2->setBalance('500000');
+        $account2->setBalance(500000);
 
         $accountHolder3 = new AccountHolder();
         $accountHolder3->setName('John Doe');
