@@ -19,7 +19,7 @@
             <tr>
                 <td>{{ account.id }}</td>
                 <td>{{ account.iban }}</td>
-                <td>{{ account.balance }}</td>
+                <td>{{ (account.balance / 100)|number_format(2) }} €</td>
                 <td>
                     <a href="{{ path('account_show', {'id': account.id}) }}">show</a>
                 </td>

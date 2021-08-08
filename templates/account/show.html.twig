@@ -15,7 +15,7 @@
             </tr>
             <tr>
                 <th>Balance</th>
-                <td>{{ account.balance }}</td>
+                <td>{{ (account.balance / 100)|number_format(2) }} €</td>
             </tr>
         </tbody>
     </table>
@@ -35,7 +35,7 @@
             <th>Reference</th>
             <th>Authorization</th>
             <th>SubmitterId</th>
-            <th>Amount in ct</th>
+            <th>Amount</th>
         </tr>
         </thead>
         <tbody>
