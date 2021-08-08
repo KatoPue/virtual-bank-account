@@ -237,6 +237,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "spatie/enum": {
+        "version": "3.9.0"
+    },
     "symfony/asset": {
         "version": "v5.3.2"
     },

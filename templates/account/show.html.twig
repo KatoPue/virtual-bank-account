@@ -22,7 +22,9 @@
         </tbody>
     </table>
 
-    {% include 'account/_deposit_form.html.twig' with {'form': depositForm} %}
+    <a href="{{ path('transaction_deposit', {'id': account.id}) }}">Deposit balance</a>
+    {#<a href="{{ path('transaction_withdraw', {'id': account.id}) }}">Withdraw balance</a>#}
+    {#<a href="{{ path('transaction_transfer', {'id': account.id}) }}">Transfer balance</a>#}
 
     <a href="{{ path('account_index') }}">back to list</a>
 {% endblock %}

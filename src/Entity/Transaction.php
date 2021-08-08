@@ -15,37 +15,37 @@ class Transaction
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="transactionsAsOrigin")
      */
-    private $origin;
+    private ?Account $origin;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="transationsAsTarget")
      */
-    private $target;
+    private ?Account $target;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $reference;
+    private string $reference = 'NOT PROVIDED';
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $authorization;
+    private string $authorization = '';
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $submitterId;
+    private string $submitterId = '';
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $amount = 0;
+    private int $amount = 0;
 
     public function getId(): ?int
     {
@@ -76,7 +76,7 @@ class Transaction
         return $this;
     }
 
-    public function getReference(): ?string
+    public function getReference(): string
     {
         return $this->reference;
     }
@@ -88,7 +88,7 @@ class Transaction
         return $this;
     }
 
-    public function getAuthorization(): ?string
+    public function getAuthorization(): string
     {
         return $this->authorization;
     }
@@ -100,7 +100,7 @@ class Transaction
         return $this;
     }
 
-    public function getSubmitterId(): ?string
+    public function getSubmitterId(): string
     {
         return $this->submitterId;
     }
@@ -112,7 +112,7 @@ class Transaction
         return $this;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): int
     {
         return $this->amount;
     }

@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Account;
 use App\Entity\Transaction;
+use App\Enum\TransactionFormTypeMode;
 use App\Form\TransactionType;
 use App\Repository\TransactionRepository;
+use App\Service\UpdateAccountBalance;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,6 +70,44 @@ class TransactionController extends AbstractController
         return $this->render('transaction/edit.html.twig', [
             'transaction' => $transaction,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    #[Route('/{id}/deposit', name: 'transaction_deposit', methods: ['GET', 'POST'])]
+    public function deposit(
+        Request $request,
+        Account $account,
+        TransactionRepository $transactionRepository,
+        UpdateAccountBalance $updateAccountBalance
+    ): Response
+    {
+        $transaction = new Transaction();
+        $transaction->setTarget($account);
+
+        $form = $this->createForm(TransactionType::class, $transaction, [
+            'usage_context' => TransactionFormTypeMode::DEPOSIT()
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Transaction $transaction */
+            $transaction = $form->getData();
+            $transactionRepository->save($transaction);
+
+            $updateAccountBalance->updateAccountWithTransaction($account, $transaction);
+
+            $this->addFlash('success', 'Transaction successfully completed.');
+
+            return $this->redirectToRoute('account_show', ['id' => $account->getId()]);
+        }
+
+        return $this->render('transaction/deposit.html.twig', [
+            'account' => $account,
+            'form'    => $form->createView(),
         ]);
     }
 

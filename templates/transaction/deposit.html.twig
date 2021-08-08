@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Deposit</h1>
+
+    {{ include('transaction/_form.html.twig', {'button_label': 'Deposit'}) }}
+
+    <a href="{{ path('account_show', {'id': account.id}) }}">back to list</a>
+{% endblock %}
