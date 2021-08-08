@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Home{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Virtual Bank Account</h1>
+        <h2>Where your money is as virtual as in real life.</h2>
+        <p>
+            This is a sample project. Feel free to try stuff an to break anything.
+        </p>
+
+        <h3>Where to start?</h3>
+        <p>
+            Access <a href="{{ path('account_show', {'id': 1}) }}">your account</a> to see your current balance, add balance and transfer balance to another account.
+        </p>
+    </div>
+{% endblock %}

@@ -22,7 +22,7 @@ class Account
     /**
      * @ORM\Column(type="string", length=22)
      */
-    private $iban;
+    private string $iban = '';
 
     /**
      * @ORM\Column(type="integer")
@@ -51,12 +51,17 @@ class Account
         $this->transationsAsTarget = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getIban();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIban(): ?string
+    public function getIban(): string
     {
         return $this->iban;
     }

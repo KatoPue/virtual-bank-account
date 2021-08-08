@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Account;
+use App\Entity\Transaction;
 use App\Form\AccountType;
+use App\Form\TransactionType;
 use App\Repository\AccountRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,10 +45,19 @@ class AccountController extends AbstractController
     }
 
     #[Route('/{id}', name: 'account_show', methods: ['GET'])]
-    public function show(Account $account): Response
+    public function show(Request $request, Account $account): Response
     {
+        $depositForm = $this->createForm(TransactionType::class, new Transaction());
+        $depositForm->handleRequest($request);
+        if ($depositForm->isSubmitted() && $depositForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('account_show', ['id' => $account->getId()]);
+        }
+
         return $this->render('account/show.html.twig', [
             'account' => $account,
+            'depositForm' => $depositForm->createView(),
         ]);
     }
 
