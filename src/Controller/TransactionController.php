@@ -26,53 +26,6 @@ class TransactionController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'transaction_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
-    {
-        $transaction = new Transaction();
-        $form = $this->createForm(TransactionType::class, $transaction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($transaction);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('transaction_index');
-        }
-
-        return $this->render('transaction/new.html.twig', [
-            'transaction' => $transaction,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/{id}', name: 'transaction_show', methods: ['GET'])]
-    public function show(Transaction $transaction): Response
-    {
-        return $this->render('transaction/show.html.twig', [
-            'transaction' => $transaction,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'transaction_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Transaction $transaction): Response
-    {
-        $form = $this->createForm(TransactionType::class, $transaction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('transaction_index');
-        }
-
-        return $this->render('transaction/edit.html.twig', [
-            'transaction' => $transaction,
-            'form' => $form->createView(),
-        ]);
-    }
-
     /**
      * @throws OptimisticLockException
      * @throws ORMException
@@ -185,17 +138,5 @@ class TransactionController extends AbstractController
             'account' => $account,
             'form'    => $form->createView(),
         ]);
-    }
-
-    #[Route('/{id}', name: 'transaction_delete', methods: ['POST'])]
-    public function delete(Request $request, Transaction $transaction): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$transaction->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($transaction);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('transaction_index');
     }
 }

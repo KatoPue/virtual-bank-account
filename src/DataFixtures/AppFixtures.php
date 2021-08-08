@@ -24,7 +24,7 @@ class AppFixtures extends Fixture
         $manager->persist($account);
 
         $accountHolder2 = new AccountHolder();
-        $accountHolder2->setName('Max Mustermann');
+        $accountHolder2->setName('Jane Doe');
 
         $manager->persist($accountHolder2);
 
@@ -33,7 +33,17 @@ class AppFixtures extends Fixture
         $account2->setIban('DE26500105177733472361');
         $account2->setBalance('500000');
 
-        $manager->persist($account2);
+        $accountHolder3 = new AccountHolder();
+        $accountHolder3->setName('John Doe');
+
+        $manager->persist($accountHolder3);
+
+        $account3 = new Account();
+        $account3->setAccountHolder($accountHolder3);
+        $account3->setIban('DE8690345190340ß795723');
+        $account3->setBalance('500000');
+
+        $manager->persist($account3);
 
         $manager->flush();
     }

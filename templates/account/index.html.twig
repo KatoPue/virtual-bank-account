@@ -22,7 +22,6 @@
                 <td>{{ account.balance }}</td>
                 <td>
                     <a href="{{ path('account_show', {'id': account.id}) }}">show</a>
-                    <a href="{{ path('account_edit', {'id': account.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -32,6 +31,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('account_new') }}">Create new</a>
 {% endblock %}
