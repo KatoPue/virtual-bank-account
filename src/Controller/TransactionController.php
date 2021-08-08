@@ -50,10 +50,10 @@ class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Transaction $transaction */
             $transaction = $form->getData();
-            $transactionRepository->save($transaction);
 
             try {
                 $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+                $transactionRepository->save($transaction);
             } catch (AccountBalanceTooLowException $exception) {
                 $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
 
@@ -97,10 +97,10 @@ class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Transaction $transaction */
             $transaction = $form->getData();
-            $transactionRepository->save($transaction);
 
             try {
                 $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+                $transactionRepository->save($transaction);
             } catch (AccountBalanceTooLowException $exception) {
                 $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
 
@@ -144,10 +144,10 @@ class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Transaction $transaction */
             $transaction = $form->getData();
-            $transactionRepository->save($transaction);
 
             try {
                 $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
+                $transactionRepository->save($transaction);
             } catch (AccountBalanceTooLowException $exception) {
                 $this->addFlash('error', 'This transaction would result in a negative account balance. Please check the amount and your current balance.');
 
