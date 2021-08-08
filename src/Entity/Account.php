@@ -17,7 +17,7 @@ class Account
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=22)
@@ -27,28 +27,28 @@ class Account
     /**
      * @ORM\Column(type="integer")
      */
-    private $balance;
+    private int $balance = 0;
 
     /**
      * @ORM\OneToOne(targetEntity=AccountHolder::class, inversedBy="account", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $accountHolder;
+    private ?AccountHolder $accountHolder = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="origin")
      */
-    private $transactionsAsOrigin;
+    private ArrayCollection $transactionsAsOrigin;
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="target")
      */
-    private $transationsAsTarget;
+    private ArrayCollection $transactionsAsTarget;
 
     public function __construct()
     {
         $this->transactionsAsOrigin = new ArrayCollection();
-        $this->transationsAsTarget = new ArrayCollection();
+        $this->transactionsAsTarget = new ArrayCollection();
     }
 
     public function __toString()
@@ -98,7 +98,7 @@ class Account
     }
 
     /**
-     * @return Collection|Transaction[]
+     * @return Collection<Transaction>
      */
     public function getTransactionsAsOrigin(): Collection
     {
@@ -128,29 +128,29 @@ class Account
     }
 
     /**
-     * @return Collection|Transaction[]
+     * @return Collection<Transaction>
      */
-    public function getTransationsAsTarget(): Collection
+    public function getTransactionsAsTarget(): Collection
     {
-        return $this->transationsAsTarget;
+        return $this->transactionsAsTarget;
     }
 
-    public function addTransationsAsTarget(Transaction $transationsAsTarget): self
+    public function addTransactionsAsTarget(Transaction $transationsAsTarget): self
     {
-        if (!$this->transationsAsTarget->contains($transationsAsTarget)) {
-            $this->transationsAsTarget[] = $transationsAsTarget;
+        if (!$this->transactionsAsTarget->contains($transationsAsTarget)) {
+            $this->transactionsAsTarget[] = $transationsAsTarget;
             $transationsAsTarget->setTarget($this);
         }
 
         return $this;
     }
 
-    public function removeTransationsAsTarget(Transaction $transationsAsTarget): self
+    public function removeTransactionsAsTarget(Transaction $transactionsAsTarget): self
     {
-        if ($this->transationsAsTarget->removeElement($transationsAsTarget)) {
+        if ($this->transactionsAsTarget->removeElement($transactionsAsTarget)) {
             // set the owning side to null (unless already changed)
-            if ($transationsAsTarget->getTarget() === $this) {
-                $transationsAsTarget->setTarget(null);
+            if ($transactionsAsTarget->getTarget() === $this) {
+                $transactionsAsTarget->setTarget(null);
             }
         }
 

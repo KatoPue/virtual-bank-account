@@ -15,17 +15,17 @@ class Transaction
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="transactionsAsOrigin")
      */
-    private ?Account $origin;
+    private ?Account $origin = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="transationsAsTarget")
      */
-    private ?Account $target;
+    private ?Account $target = null;
 
     /**
      * @ORM\Column(type="string", length=255)

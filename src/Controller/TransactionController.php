@@ -82,7 +82,7 @@ class TransactionController extends AbstractController
         Request $request,
         Account $account,
         TransactionRepository $transactionRepository,
-        UpdateAccountBalance $updateAccountBalance
+        UpdateAccountBalance $updateAccountBalance,
     ): Response
     {
         $transaction = new Transaction();
@@ -98,7 +98,7 @@ class TransactionController extends AbstractController
             $transaction = $form->getData();
             $transactionRepository->save($transaction);
 
-            $updateAccountBalance->updateAccountWithTransaction($account, $transaction);
+            $updateAccountBalance->updateAccountsLinkedToTransaction($transaction);
 
             $this->addFlash('success', 'Transaction successfully completed.');
 
